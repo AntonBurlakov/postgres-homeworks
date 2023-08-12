@@ -24,5 +24,7 @@ CREATE TABLE orders
 	employee_id int NOT NULL,
 	order_date date,
 	ship_city varchar(50) NOT NULL
+	FOREIGN KEY (customer_id) REFERENCES customers(customer_id),
+	FOREIGN KEY (employee_id) REFERENCES employees(employee_id)
 
 )

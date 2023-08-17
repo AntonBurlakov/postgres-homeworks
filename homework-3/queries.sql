@@ -18,17 +18,16 @@ SELECT products.product_name, products.units_in_stock, suppliers.contact_name, s
 FROM products
 JOIN suppliers USING(supplier_id)
 JOIN categories USING(category_id)
-WHERE  categories.category_name = 'Dairy Products' OR categories.category_name = 'Condiments'
-AND discontinued <> 0 AND units_in_stock < 25
+WHERE discontinued = 0
+    AND units_in_stock < 25
+    AND category_name IN ('Condiments', 'Dairy Products')
 ORDER BY units_in_stock
 
 -- 3. Список компаний заказчиков (company_name из табл customers), не сделавших ни одного заказа
 
-SELECT customers.company_name
-FROM orders
-JOIN order_details USING(order_id)
-JOIN customers USING(customer_id)
-WHERE order_details.quantity = 0
+SELECT company_name
+FROM customers
+WHERE customer_id NOT IN (SELECT DISTINCT customer_id FROM orders)
 
 -- 4. уникальные названия продуктов, которых заказано ровно 10 единиц (количество заказанных единиц см в колонке quantity табл order_details)
 -- Этот запрос написать именно с использованием подзапроса.
